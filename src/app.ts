@@ -1,6 +1,15 @@
+//可以取得.env的參數
+import 'dotenv/config';
+
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerConfig from './config/swagger';
+import { errors } from 'celebrate';
+import DataSource from './config/db.config';
+import routes from './routes';
 
 (async () => {
     const app = express();
