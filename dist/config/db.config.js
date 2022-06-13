@@ -10,7 +10,7 @@ const AppDataSource = new typeorm_1.DataSource({
     database: "test",
     synchronize: true,
     logging: true,
-    entities: ['./src/entities/*.ts'],
+    entities: ['./dist/entities/*.js'],
     migrations: ['./src/migrations/*.ts'],
 });
 exports.default = AppDataSource;

@@ -9,9 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.todo = void 0;
+exports.Todo = void 0;
 const typeorm_1 = require("typeorm");
-let todo = class todo extends typeorm_1.BaseEntity {
+let Todo = class Todo extends typeorm_1.BaseEntity {
     id;
     thing;
     createdAt;
@@ -20,21 +20,21 @@ let todo = class todo extends typeorm_1.BaseEntity {
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], todo.prototype, "id", void 0);
+], Todo.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], todo.prototype, "thing", void 0);
+], Todo.prototype, "thing", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], todo.prototype, "createdAt", void 0);
+], Todo.prototype, "createdAt", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Boolean)
-], todo.prototype, "isFinish", void 0);
-todo = __decorate([
+], Todo.prototype, "isFinish", void 0);
+Todo = __decorate([
     (0, typeorm_1.Entity)()
-], todo);
-exports.todo = todo;
+], Todo);
+exports.Todo = Todo;
 //# sourceMappingURL=todo.entity.js.map

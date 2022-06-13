@@ -1,7 +1,7 @@
 import { BaseEntity, Entity, Column, CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class todo extends BaseEntity {
+export class Todo extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;
 
