@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const todo_entity_1 = require("../entities/todo.entity");
+//sofe delete
 async function findOneById(id) {
-    return todo_entity_1.Todo.findBy({ "id": id });
+    return todo_entity_1.Todo.findBy({ "id": id, "isDelete": false });
 }
+//sofe delete
 async function list() {
-    console.log(await findOneById(5));
-    return todo_entity_1.Todo.find();
+    return todo_entity_1.Todo.findBy({ isDelete: false });
 }
 async function add(todoData) {
     const todo = new todo_entity_1.Todo();
@@ -31,10 +32,19 @@ async function del(id) {
     }
     return "error: 此id不存在";
 }
+async function softDel(id) {
+    const data = (await findOneById(id))[0];
+    if (data) {
+        data.isDelete = true;
+        return data.save();
+    }
+    return "error: 此id不存在";
+}
 exports.default = {
     list,
     add,
     update,
-    del
+    del,
+    softDel,
 };
 //# sourceMappingURL=todo.model.js.map

@@ -1,4 +1,5 @@
-import { BaseEntity, Entity, Column, CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
+import {Tag} from './tag.entity'
 
 @Entity()
 export class Todo extends BaseEntity {
@@ -13,4 +14,11 @@ export class Todo extends BaseEntity {
 
     @Column()
     public isFinish: boolean;
+
+    @Column()
+    public isDelete: boolean;
+
+    @ManyToMany(() => Tag)
+    @JoinTable()
+    tags: Tag[];
 }

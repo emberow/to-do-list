@@ -8,9 +8,8 @@ async function list(req, res) {
     res.json(await todo_service_1.default.list());
 }
 async function add(req, res) {
-    const { thing } = req.body;
-    const Data = { thing, isFinish: false };
-    res.json(await todo_service_1.default.add(Data));
+    const thing = req.body.thing;
+    res.json(await todo_service_1.default.add(thing));
 }
 async function update(req, res) {
     const id = Number(req.params.id);

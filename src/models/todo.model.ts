@@ -1,15 +1,17 @@
+import { BlockList } from 'net';
 import {Todo} from '../entities/todo.entity';
 
+//sofe delete
 async function findOneById(id: number){
-    return Todo.findBy({"id":id});
+    return Todo.findBy({"id":id, "isDelete": false});
 }
 
+//sofe delete
 async function list() {
-    console.log(await findOneById(5));
-    return Todo.find();
+    return Todo.findBy({isDelete: false});
 }
 
-async function add(todoData: { thing: string, isFinish: boolean }){
+async function add(todoData: { thing: string, isFinish: boolean, isDelete: boolean}){
     const todo = new Todo();
     Object.assign(todo, todoData);
     return todo.save();
@@ -33,13 +35,21 @@ async function del(id: number){
         return todo.remove();
     }
     return "error: 此id不存在"
-    
-    
+}
+
+async function softDel(id: number){
+    const data = (await findOneById(id))[0];
+    if(data){
+        data.isDelete = true;
+        return data.save();
+    }
+    return "error: 此id不存在"
 }
 
 export default {
     list,
     add,
     update,
-    del
+    del,
+    softDel,
 };
