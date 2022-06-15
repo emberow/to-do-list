@@ -20,26 +20,28 @@ async function list() {
 
 async function add(todoData: { thing: string, isFinish: boolean, isDelete: boolean}, tags: string[]){
     let todo = new Todo();
+    Object.assign(todo, todoData);
     todo.tags = [];
     //使用for 當資料庫有此tag則不儲存，反之儲存
-    tags.forEach(async element =>{
-        let data = await findOneByTag(element);
+
+    for(let i = 0; i < tags.length; i++){
+        let data = await findOneByTag(tags[i]);
         let tag = new Tag();
         //資料庫已經有這個tag了
         if(data.length == 1){
             tag.id = data[0].id;
             tag.name = data[0].name;
+            todo.tags.push(tag);
         }
         //資料庫沒有此tag，儲存到資料庫
         else{
-            tag.name = element;
-            tag.save();
+            tag.name = tags[i];
+            todo.tags.push(await tag.save());
         }
-        todo.tags.push(tag);
-    });
-    Object.assign(todo, todoData);
-    console.log(todo);
-    return todo.save();
+    }
+    
+    const result = await todo.save()
+    return result;
 }
 
 async function update(todoData: {id:number, thing: string, isFinish: boolean }){

@@ -10,12 +10,12 @@ async function list() {
 async function add(thing, tags) {
     let todoData = { thing: thing, isFinish: false, isDelete: false, tags: tags };
     let data = await todo_model_1.default.add(todoData, tags);
-    const result = {
-        thing: data.thing,
-        isFinish: data.isFinish,
-        createdAt: data.createdAt,
-    };
-    return result;
+    // const result = {
+    //     thing: data.thing, 
+    //     isFinish: data.isFinish, 
+    //     createdAt: data.createdAt,
+    // };
+    return data;
 }
 async function update(todoData) {
     return todo_model_1.default.update(todoData);

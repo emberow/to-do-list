@@ -1,0 +1,123 @@
+swagger: "2.0"
+info:
+  title: API Title
+  version: "1.0"
+
+paths:
+  /api/todo/:
+    get:
+        tags:
+          - todo
+        summary: 得到所有todo list
+        
+        produces:
+          - application/json
+        responses:
+          200:
+            description: todo data
+            schema:
+              type: object
+              example: 
+                [{
+                    "id": 40,
+                    "thing": "bbb",
+                    "createdAt": "2022-06-14T08:36:07.256Z",
+                    "isFinish": false,
+                    "isDelete": false,
+                    "tags": [
+                        {
+                            "id": 5,
+                            "name": "a"
+                        }
+                    ]
+                }]
+    post:
+      tags:
+        - todo
+      summary: 新增todo
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            example: {
+                "thing": "寫api",
+                "tags": ["工作","寫程式"]
+            }
+      produces:
+        - application/json
+      responses:
+        200:
+          description: todo data
+          schema:
+            type: object
+            example: 
+              [{
+                  "id": 40,
+                  "thing": "bbb",
+                  "createdAt": "2022-06-14T08:36:07.256Z",
+                  "isFinish": false,
+                  "isDelete": false,
+                  "tags": [
+                      {
+                          "id": 5,
+                          "name": "a"
+                      }
+                  ]
+              }]
+  
+  /api/todo/{Id}:
+    put:
+      tags:
+        - todo
+      summary: 修改todo
+      parameters:
+        - in: path
+          name: Id
+          type: integer          
+          required: true
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            example: {
+                "thing": "aaa",
+                "isFinish": true
+            }
+      produces:
+        - application/json
+      responses:
+        200:
+          description: 修改todo
+          schema:
+            type: object
+            example:
+              {
+                "id": 3,
+                "thing": "aaa",
+                "isFinish": true
+              }
+    delete:
+      tags:
+        - todo
+      summary: 刪除todo
+      parameters:
+        - in: path
+          name: Id
+          type: integer          
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: 刪除todo
+          schema:
+            type: object
+            example:
+              {
+                "id": 30,
+                "thing": "aaa",
+                "isFinish": true
+              }
