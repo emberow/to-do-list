@@ -5,9 +5,9 @@ async function list() {
     return TodoModel.list();
 }
 
-async function add(thing: string) {
-    let todoData = {thing: thing, isFinish: false, isDelete: false};
-    let data = await TodoModel.add(todoData);
+async function add(thing: string, tags: string[]) {
+    let todoData = {thing: thing, isFinish: false, isDelete: false, tags: tags};
+    let data = await TodoModel.add(todoData, tags);
     const result = {
         thing: data.thing, 
         isFinish: data.isFinish, 

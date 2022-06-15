@@ -13,7 +13,7 @@ exports.Tag = void 0;
 const typeorm_1 = require("typeorm");
 let Tag = class Tag extends typeorm_1.BaseEntity {
     id;
-    tag;
+    name;
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -22,7 +22,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Tag.prototype, "tag", void 0);
+], Tag.prototype, "name", void 0);
 Tag = __decorate([
     (0, typeorm_1.Entity)()
 ], Tag);

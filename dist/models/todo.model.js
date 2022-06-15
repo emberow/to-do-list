@@ -1,17 +1,40 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tag_entity_1 = require("../entities/tag.entity");
 const todo_entity_1 = require("../entities/todo.entity");
 //sofe delete
 async function findOneById(id) {
-    return todo_entity_1.Todo.findBy({ "id": id, "isDelete": false });
+    return todo_entity_1.Todo.findBy({ id: id, isDelete: false });
+}
+async function findOneByTag(tag) {
+    return tag_entity_1.Tag.findBy({ name: tag });
 }
 //sofe delete
 async function list() {
-    return todo_entity_1.Todo.findBy({ isDelete: false });
+    return todo_entity_1.Todo.find({ relations: ["tags"] });
+    // return Todo.findBy({isDelete: false});
 }
-async function add(todoData) {
-    const todo = new todo_entity_1.Todo();
+async function add(todoData, tags) {
+    let todo = new todo_entity_1.Todo();
+    todo.tags = [];
+    //使用for 當資料庫有此tag則不儲存，反之儲存
+    tags.forEach(async (element) => {
+        let data = await findOneByTag(element);
+        let tag = new tag_entity_1.Tag();
+        //資料庫已經有這個tag了
+        if (data.length == 1) {
+            tag.id = data[0].id;
+            tag.name = data[0].name;
+        }
+        //資料庫沒有此tag，儲存到資料庫
+        else {
+            tag.name = element;
+            tag.save();
+        }
+        todo.tags.push(tag);
+    });
     Object.assign(todo, todoData);
+    console.log(todo);
     return todo.save();
 }
 async function update(todoData) {

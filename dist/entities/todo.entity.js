@@ -41,7 +41,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Todo.prototype, "isDelete", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => tag_entity_1.Tag),
+    (0, typeorm_1.ManyToMany)(() => tag_entity_1.Tag, tag => tag.name),
     (0, typeorm_1.JoinTable)(),
     __metadata("design:type", Array)
 ], Todo.prototype, "tags", void 0);

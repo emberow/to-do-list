@@ -18,7 +18,7 @@ export class Todo extends BaseEntity {
     @Column()
     public isDelete: boolean;
 
-    @ManyToMany(() => Tag)
+    @ManyToMany(() => Tag, tag => tag.name)
     @JoinTable()
     tags: Tag[];
 }

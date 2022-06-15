@@ -1,19 +1,44 @@
+import { Tag } from '../entities/tag.entity';
 import { BlockList } from 'net';
 import {Todo} from '../entities/todo.entity';
+import { Connection } from 'typeorm';
 
 //sofe delete
 async function findOneById(id: number){
-    return Todo.findBy({"id":id, "isDelete": false});
+    return Todo.findBy({id: id, isDelete: false});
+}
+
+async function findOneByTag(tag: string){
+    return Tag.findBy({name: tag})
 }
 
 //sofe delete
 async function list() {
-    return Todo.findBy({isDelete: false});
+    return Todo.find({relations: ["tags"]});
+    // return Todo.findBy({isDelete: false});
 }
 
-async function add(todoData: { thing: string, isFinish: boolean, isDelete: boolean}){
-    const todo = new Todo();
+async function add(todoData: { thing: string, isFinish: boolean, isDelete: boolean}, tags: string[]){
+    let todo = new Todo();
+    todo.tags = [];
+    //使用for 當資料庫有此tag則不儲存，反之儲存
+    tags.forEach(async element =>{
+        let data = await findOneByTag(element);
+        let tag = new Tag();
+        //資料庫已經有這個tag了
+        if(data.length == 1){
+            tag.id = data[0].id;
+            tag.name = data[0].name;
+        }
+        //資料庫沒有此tag，儲存到資料庫
+        else{
+            tag.name = element;
+            tag.save();
+        }
+        todo.tags.push(tag);
+    });
     Object.assign(todo, todoData);
+    console.log(todo);
     return todo.save();
 }
 

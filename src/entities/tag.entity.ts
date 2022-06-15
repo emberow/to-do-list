@@ -6,5 +6,6 @@ export class Tag extends BaseEntity {
     public id: number;
 
     @Column()
-    public tag: string;
+    public name: string;
+    
 }

@@ -7,10 +7,14 @@ const todo_model_1 = __importDefault(require("../models/todo.model"));
 async function list() {
     return todo_model_1.default.list();
 }
-async function add(thing) {
-    let todoData = { thing: thing, isFinish: false, isDelete: false };
-    let data = await todo_model_1.default.add(todoData);
-    const result = { thing: data.thing, isFinish: data.isFinish, createdAt: data.createdAt };
+async function add(thing, tags) {
+    let todoData = { thing: thing, isFinish: false, isDelete: false, tags: tags };
+    let data = await todo_model_1.default.add(todoData, tags);
+    const result = {
+        thing: data.thing,
+        isFinish: data.isFinish,
+        createdAt: data.createdAt,
+    };
     return result;
 }
 async function update(todoData) {

@@ -7,7 +7,8 @@ async function list(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
     const thing = req.body.thing; 
-    res.json(await TodoService.add(thing));
+    const tags = req.body.tags;
+    res.json(await TodoService.add(thing, tags));
 }
 
 async function update(req: Request, res: Response) {
