@@ -18,14 +18,14 @@ async function list() {
     // return Todo.findBy({isDelete: false});
 }
 
-async function add(todoData: { thing: string, isFinish: boolean, isDelete: boolean}, tags: string[]){
+async function add(todoData: { thing: string, isFinish: boolean, isDelete: boolean, tags: string[]}){
     let todo = new Todo();
     Object.assign(todo, todoData);
     todo.tags = [];
     //使用for 當資料庫有此tag則不儲存，反之儲存
 
-    for(let i = 0; i < tags.length; i++){
-        let data = await findOneByTag(tags[i]);
+    for(let i = 0; i < todoData.tags.length; i++){
+        let data = await findOneByTag(todoData.tags[i]);
         let tag = new Tag();
         //資料庫已經有這個tag了
         if(data.length == 1){
@@ -35,7 +35,7 @@ async function add(todoData: { thing: string, isFinish: boolean, isDelete: boole
         }
         //資料庫沒有此tag，儲存到資料庫
         else{
-            tag.name = tags[i];
+            tag.name = todoData.tags[i];
             todo.tags.push(await tag.save());
         }
     }
@@ -44,15 +44,37 @@ async function add(todoData: { thing: string, isFinish: boolean, isDelete: boole
     return result;
 }
 
-async function update(todoData: {id:number, thing: string, isFinish: boolean }){
+async function update(todoData: {id:number, thing: string, isFinish: boolean, tags: string[]}){
+    const todo = new Todo();
+    Object.assign(todo, todoData);
+    todo.tags = [];
     const id = todoData.id;
     const data = await findOneById(id);
+    for(let i = 0; i < todoData.tags.length; i++){
+        //dbHasTag可以判斷資料庫是否有這個tag
+        const tagInfo = (await findOneByTag(todoData.tags[i]));
+        //如果沒有的話，則新增到db
+        if(!(tagInfo.length == 1)){
+            let tag = new Tag();
+            tag.name = todoData.tags[i];
+            todo.tags.push(await tag.save());
+        }
+        //如果有則讀取該tag的id，並將它跟todo綁定
+        else{
+            let tag = new Tag();
+            tag.id = tagInfo[0].id;
+            tag.name = tagInfo[0].name;
+            console.log(tag);
+            todo.tags.push(tag);
+        }
+    }
+
+    //此資料在資料庫存在時就可以修改
     if(data.length != 0){
-        const todo = new Todo();
-        Object.assign(todo, todoData);
+        console.log(todo);
         return todo.save();
     }
-    return "error: 此id不存在"
+    return {};
 }
 
 async function del(id: number){
@@ -61,7 +83,7 @@ async function del(id: number){
         const todo = await Todo.findOneByOrFail({ id });
         return todo.remove();
     }
-    return "error: 此id不存在"
+    return {};
 }
 
 async function softDel(id: number){
@@ -70,7 +92,7 @@ async function softDel(id: number){
         data.isDelete = true;
         return data.save();
     }
-    return "error: 此id不存在"
+    return {};
 }
 
 export default {

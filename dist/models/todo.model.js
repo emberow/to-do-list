@@ -14,13 +14,13 @@ async function list() {
     return todo_entity_1.Todo.find({ relations: ["tags"] });
     // return Todo.findBy({isDelete: false});
 }
-async function add(todoData, tags) {
+async function add(todoData) {
     let todo = new todo_entity_1.Todo();
     Object.assign(todo, todoData);
     todo.tags = [];
     //使用for 當資料庫有此tag則不儲存，反之儲存
-    for (let i = 0; i < tags.length; i++) {
-        let data = await findOneByTag(tags[i]);
+    for (let i = 0; i < todoData.tags.length; i++) {
+        let data = await findOneByTag(todoData.tags[i]);
         let tag = new tag_entity_1.Tag();
         //資料庫已經有這個tag了
         if (data.length == 1) {
@@ -30,7 +30,7 @@ async function add(todoData, tags) {
         }
         //資料庫沒有此tag，儲存到資料庫
         else {
-            tag.name = tags[i];
+            tag.name = todoData.tags[i];
             todo.tags.push(await tag.save());
         }
     }
@@ -38,14 +38,35 @@ async function add(todoData, tags) {
     return result;
 }
 async function update(todoData) {
+    const todo = new todo_entity_1.Todo();
+    Object.assign(todo, todoData);
+    todo.tags = [];
     const id = todoData.id;
     const data = await findOneById(id);
+    for (let i = 0; i < todoData.tags.length; i++) {
+        //dbHasTag可以判斷資料庫是否有這個tag
+        const tagInfo = (await findOneByTag(todoData.tags[i]));
+        //如果沒有的話，則新增到db
+        if (!(tagInfo.length == 1)) {
+            let tag = new tag_entity_1.Tag();
+            tag.name = todoData.tags[i];
+            todo.tags.push(await tag.save());
+        }
+        //如果有則讀取該tag的id，並將它跟todo綁定
+        else {
+            let tag = new tag_entity_1.Tag();
+            tag.id = tagInfo[0].id;
+            tag.name = tagInfo[0].name;
+            console.log(tag);
+            todo.tags.push(tag);
+        }
+    }
+    //此資料在資料庫存在時就可以修改
     if (data.length != 0) {
-        const todo = new todo_entity_1.Todo();
-        Object.assign(todo, todoData);
+        console.log(todo);
         return todo.save();
     }
-    return "error: 此id不存在";
+    return {};
 }
 async function del(id) {
     const data = await findOneById(id);
@@ -53,7 +74,7 @@ async function del(id) {
         const todo = await todo_entity_1.Todo.findOneByOrFail({ id });
         return todo.remove();
     }
-    return "error: 此id不存在";
+    return {};
 }
 async function softDel(id) {
     const data = (await findOneById(id))[0];
@@ -61,7 +82,7 @@ async function softDel(id) {
         data.isDelete = true;
         return data.save();
     }
-    return "error: 此id不存在";
+    return {};
 }
 exports.default = {
     list,

@@ -14,8 +14,8 @@ async function add(req, res) {
 }
 async function update(req, res) {
     const id = Number(req.params.id);
-    const { thing, isFinish } = req.body;
-    const todoData = { id, thing, isFinish };
+    const { thing, isFinish, tags } = req.body;
+    const todoData = { id, thing, isFinish, tags };
     res.json(await todo_service_1.default.update(todoData));
 }
 async function del(req, res) {

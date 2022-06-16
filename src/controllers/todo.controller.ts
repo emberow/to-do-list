@@ -13,8 +13,8 @@ async function add(req: Request, res: Response) {
 
 async function update(req: Request, res: Response) {
     const id = Number(req.params.id);
-    const { thing, isFinish } = req.body; 
-    const todoData = {id, thing, isFinish};
+    const { thing, isFinish, tags} = req.body; 
+    const todoData = {id, thing, isFinish, tags};
     res.json(await TodoService.update(todoData));
 }
 
