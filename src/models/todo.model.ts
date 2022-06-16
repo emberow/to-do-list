@@ -74,7 +74,7 @@ async function update(todoData: {id:number, thing: string, isFinish: boolean, ta
         console.log(todo);
         return todo.save();
     }
-    return {};
+    return "error: 此id不存在";
 }
 
 async function del(id: number){
@@ -83,7 +83,7 @@ async function del(id: number){
         const todo = await Todo.findOneByOrFail({ id });
         return todo.remove();
     }
-    return {};
+    return "error: 此id不存在"
 }
 
 async function softDel(id: number){
@@ -92,7 +92,7 @@ async function softDel(id: number){
         data.isDelete = true;
         return data.save();
     }
-    return {};
+    return "error: 此id不存在"
 }
 
 export default {

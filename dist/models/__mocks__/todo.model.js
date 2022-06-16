@@ -62,17 +62,18 @@ async function update(todoData) {
         }
     }
 }
-async function del(id) {
+async function softDel(id) {
     for (let i = 0; i < todoList.length; i++) {
         if (todoList[i].id == id) {
-            return;
+            todoList[i].isDelete = true;
         }
+        return todoList[i];
     }
 }
 exports.default = {
     add,
     list,
     update,
-    del,
+    softDel,
 };
 //# sourceMappingURL=todo.model.js.map
