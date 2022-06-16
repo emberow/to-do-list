@@ -84,7 +84,8 @@ paths:
             type: object
             example: {
                 "thing": "aaa",
-                "isFinish": true
+                "isFinish": true,
+                "tags": ["工作"]
             }
       produces:
         - application/json
@@ -95,10 +96,16 @@ paths:
             type: object
             example:
               {
-                "id": 3,
+                "id": 15,
                 "thing": "aaa",
-                "isFinish": true
-              }
+                "isFinish": true,
+                "tags": [
+                    {
+                        "id": 1,
+                        "name": "工作"
+                    }
+                ]
+            }
     delete:
       tags:
         - todo
@@ -117,7 +124,9 @@ paths:
             type: object
             example:
               {
-                "id": 30,
+                "id": 15,
                 "thing": "aaa",
-                "isFinish": true
-              }
+                "createdAt": "2022-06-16T07:05:56.586Z",
+                "isFinish": true,
+                "isDelete": true
+            }

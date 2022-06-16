@@ -66,7 +66,7 @@ async function update(todoData) {
         console.log(todo);
         return todo.save();
     }
-    return {};
+    return "error: 此id不存在";
 }
 async function del(id) {
     const data = await findOneById(id);
@@ -74,7 +74,7 @@ async function del(id) {
         const todo = await todo_entity_1.Todo.findOneByOrFail({ id });
         return todo.remove();
     }
-    return {};
+    return "error: 此id不存在";
 }
 async function softDel(id) {
     const data = (await findOneById(id))[0];
@@ -82,7 +82,7 @@ async function softDel(id) {
         data.isDelete = true;
         return data.save();
     }
-    return {};
+    return "error: 此id不存在";
 }
 exports.default = {
     list,
