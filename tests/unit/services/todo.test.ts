@@ -79,8 +79,8 @@ describe('todo service', () =>{
         });
     });
 
-    describe('update', () => {
-        test('should return todo list', async () => {
+    describe('delete', () => {
+        test('isDelete should be true', async () => {
             let id = 1;
             const todoret:any = (await TodoService.del(id));
             expect(todoret.isDelete).toBe(true);
